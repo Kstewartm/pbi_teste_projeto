@@ -60,14 +60,42 @@
         "fromColumn": "teamname",
         "fromTable": "partidas_times",
         "toColumn": "teamname",
-        "toTable": "Tabela"
+        "toTable": "Times"
       },
       {
         "name": "6b8365fb-63fd-4c84-8120-056cde6ec088",
         "fromColumn": "teamname",
         "fromTable": "partidas_jogadores",
         "toColumn": "teamname",
-        "toTable": "Tabela"
+        "toTable": "Times"
+      },
+      {
+        "name": "0bc91133-6fd5-44fd-bf44-73a2a418297b",
+        "fromColumn": "side",
+        "fromTable": "partidas_times",
+        "toColumn": "side",
+        "toTable": "lado"
+      },
+      {
+        "name": "74da9c71-6db4-44b7-85ea-6be5842109e8",
+        "fromColumn": "side",
+        "fromTable": "partidas_jogadores",
+        "toColumn": "side",
+        "toTable": "lado"
+      },
+      {
+        "name": "7ae79862-4218-483f-9c14-025958d21b6b",
+        "fromColumn": "league",
+        "fromTable": "partidas_times",
+        "toColumn": "league",
+        "toTable": "Liga"
+      },
+      {
+        "name": "c1f8e4b3-2f5b-40ec-b86f-a13b0ffc480b",
+        "fromColumn": "league",
+        "fromTable": "partidas_jogadores",
+        "toColumn": "league",
+        "toTable": "Liga"
       }
     ],
     "sourceQueryCulture": "pt-BR",
@@ -284,6 +312,44 @@
             "mode": "import",
             "source": {
               "expression": "Calendar(Date(2015,1,1), Date(2015,1,1))",
+              "type": "calculated"
+            }
+          }
+        ]
+      },
+      {
+        "name": "Liga",
+        "annotations": [
+          {
+            "name": "PBI_Id",
+            "value": "3c282d58da054c8aa96e4241210f1706"
+          }
+        ],
+        "columns": [
+          {
+            "name": "league",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "isDataTypeInferred": true,
+            "isNameInferred": true,
+            "lineageTag": "e85a4ecc-a5b7-43bd-93c9-d82db22fc0c5",
+            "sourceColumn": "partidas_times[league]",
+            "summarizeBy": "none",
+            "type": "calculatedTableColumn"
+          }
+        ],
+        "lineageTag": "94bd7021-6855-41c0-b387-17701ed7a2ff",
+        "partitions": [
+          {
+            "name": "Liga",
+            "mode": "import",
+            "source": {
+              "expression": "SUMMARIZE(partidas_times,partidas_times[league])",
               "type": "calculated"
             }
           }
@@ -716,7 +782,7 @@
         "showAsVariationsOnly": true
       },
       {
-        "name": "Tabela",
+        "name": "Times",
         "annotations": [
           {
             "name": "PBI_Id",
@@ -744,10 +810,48 @@
         "lineageTag": "871cd258-3554-4fb7-9a79-0686475997c5",
         "partitions": [
           {
-            "name": "Tabela",
+            "name": "Times",
             "mode": "import",
             "source": {
               "expression": "SUMMARIZE(partidas_times,partidas_times[teamname])",
+              "type": "calculated"
+            }
+          }
+        ]
+      },
+      {
+        "name": "lado",
+        "annotations": [
+          {
+            "name": "PBI_Id",
+            "value": "6bdce4e4783348dd991b848b86fec7d8"
+          }
+        ],
+        "columns": [
+          {
+            "name": "side",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ],
+            "dataType": "string",
+            "isDataTypeInferred": true,
+            "isNameInferred": true,
+            "lineageTag": "78ace5d9-9307-4345-921e-4d66b25ec78e",
+            "sourceColumn": "partidas_times[side]",
+            "summarizeBy": "none",
+            "type": "calculatedTableColumn"
+          }
+        ],
+        "lineageTag": "ec043b00-ca7c-4e7b-876b-5bbcf251df16",
+        "partitions": [
+          {
+            "name": "lado",
+            "mode": "import",
+            "source": {
+              "expression": "SUMMARIZE(partidas_times,partidas_times[side])",
               "type": "calculated"
             }
           }
@@ -896,10 +1000,14 @@
               {
                 "name": "SummarizationSetBy",
                 "value": "Automatic"
+              },
+              {
+                "name": "UnderlyingDateTimeDataType",
+                "value": "Date"
               }
             ],
             "dataType": "dateTime",
-            "formatString": "General Date",
+            "formatString": "Long Date",
             "lineageTag": "d82aee60-efee-47b4-82a9-be09560d2620",
             "sourceColumn": "date",
             "summarizeBy": "none",
@@ -1367,11 +1475,12 @@
             "source": {
               "expression": [
                 "let",
-                "    Fonte = Csv.Document(File.Contents(\"C:\\repos\\PBIP\\pbi_teste_projeto\\partidas_jogadores.csv\"),[Delimiter=\",\", Columns=42, Encoding=65001, QuoteStyle=QuoteStyle.None]),",
+                "    Fonte = Csv.Document(File.Contents(\"C:\\repos\\PBIP\\pbi_teste_projeto\\partidas_competitivo\\Base\\partidas_jogadores.csv\"),[Delimiter=\",\", Columns=42, Encoding=65001, QuoteStyle=QuoteStyle.None]),",
                 "    #\"Cabeçalhos Promovidos\" = Table.PromoteHeaders(Fonte, [PromoteAllScalars=true]),",
-                "    #\"Tipo Alterado\" = Table.TransformColumnTypes(#\"Cabeçalhos Promovidos\",{{\"gameid\", type text}, {\"datacompleteness\", type text}, {\"league\", type text}, {\"year\", Int64.Type}, {\"playoffs\", Int64.Type}, {\"date\", type datetime}, {\"game\", Int64.Type}, {\"participantid\", Int64.Type}, {\"side\", type text}, {\"position\", type text}, {\"teamname\", type text}, {\"champion\", type text}, {\"gamelength\", Int64.Type}, {\"result\", Int64.Type}, {\"kills\", Int64.Type}, {\"deaths\", Int64.Type}, {\"assists\", Int64.Type}, {\"teamkills\", Int64.Type}, {\"teamdeaths\", Int64.Type}, {\"firstbloodkill\", Int64.Type}, {\"team kpm\", Int64.Type}, {\"ckpm\", Int64.Type}, {\"damagetochampions\", Int64.Type}, {\"dpm\", Int64.Type}, {\"damageshare\", Int64.Type}, {\"damagetakenperminute\", Int64.Type}, {\"wardsplaced\", Int64.Type}, {\"wpm\", Int64.Type}, {\"wardskilled\", Int64.Type}, {\"wcpm\", Int64.Type}, {\"controlwardsbought\", Int64.Type}, {\"visionscore\", Int64.Type}, {\"vspm\", Int64.Type}, {\"totalgold\", Int64.Type}, {\"earnedgold\", Int64.Type}, {\"earned gpm\", Int64.Type}, {\"earnedgoldshare\", Int64.Type}, {\"goldspent\", Int64.Type}, {\"total cs\", Int64.Type}, {\"minionkills\", Int64.Type}, {\"monsterkills\", Int64.Type}, {\"cspm\", Int64.Type}})",
+                "    #\"Tipo Alterado\" = Table.TransformColumnTypes(#\"Cabeçalhos Promovidos\",{{\"gameid\", type text}, {\"datacompleteness\", type text}, {\"league\", type text}, {\"year\", Int64.Type}, {\"playoffs\", Int64.Type}, {\"date\", type datetime}, {\"game\", Int64.Type}, {\"participantid\", Int64.Type}, {\"side\", type text}, {\"position\", type text}, {\"teamname\", type text}, {\"champion\", type text}, {\"gamelength\", Int64.Type}, {\"result\", Int64.Type}, {\"kills\", Int64.Type}, {\"deaths\", Int64.Type}, {\"assists\", Int64.Type}, {\"teamkills\", Int64.Type}, {\"teamdeaths\", Int64.Type}, {\"firstbloodkill\", Int64.Type}, {\"team kpm\", Int64.Type}, {\"ckpm\", Int64.Type}, {\"damagetochampions\", Int64.Type}, {\"dpm\", Int64.Type}, {\"damageshare\", Int64.Type}, {\"damagetakenperminute\", Int64.Type}, {\"wardsplaced\", Int64.Type}, {\"wpm\", Int64.Type}, {\"wardskilled\", Int64.Type}, {\"wcpm\", Int64.Type}, {\"controlwardsbought\", Int64.Type}, {\"visionscore\", Int64.Type}, {\"vspm\", Int64.Type}, {\"totalgold\", Int64.Type}, {\"earnedgold\", Int64.Type}, {\"earned gpm\", Int64.Type}, {\"earnedgoldshare\", Int64.Type}, {\"goldspent\", Int64.Type}, {\"total cs\", Int64.Type}, {\"minionkills\", Int64.Type}, {\"monsterkills\", Int64.Type}, {\"cspm\", Int64.Type}}),",
+                "    #\"Tipo Alterado1\" = Table.TransformColumnTypes(#\"Tipo Alterado\",{{\"date\", type date}})",
                 "in",
-                "    #\"Tipo Alterado\""
+                "    #\"Tipo Alterado1\""
               ],
               "type": "m"
             }
@@ -1494,10 +1603,14 @@
               {
                 "name": "SummarizationSetBy",
                 "value": "Automatic"
+              },
+              {
+                "name": "UnderlyingDateTimeDataType",
+                "value": "Date"
               }
             ],
             "dataType": "dateTime",
-            "formatString": "General Date",
+            "formatString": "Long Date",
             "lineageTag": "3ad52ff3-83f4-4291-90b3-637deaa89acc",
             "sourceColumn": "date",
             "summarizeBy": "none",
@@ -2035,11 +2148,12 @@
             "source": {
               "expression": [
                 "let",
-                "    Fonte = Csv.Document(File.Contents(\"C:\\repos\\PBIP\\pbi_teste_projeto\\partidas_times.csv\"),[Delimiter=\",\", Columns=45, Encoding=65001, QuoteStyle=QuoteStyle.None]),",
+                "    Fonte = Csv.Document(File.Contents(\"C:\\repos\\PBIP\\pbi_teste_projeto\\partidas_competitivo\\Base\\partidas_times.csv\"),[Delimiter=\",\", Columns=45, Encoding=65001, QuoteStyle=QuoteStyle.None]),",
                 "    #\"Cabeçalhos Promovidos\" = Table.PromoteHeaders(Fonte, [PromoteAllScalars=true]),",
-                "    #\"Tipo Alterado\" = Table.TransformColumnTypes(#\"Cabeçalhos Promovidos\",{{\"gameid\", type text}, {\"datacompleteness\", type text}, {\"league\", type text}, {\"year\", Int64.Type}, {\"playoffs\", Int64.Type}, {\"date\", type datetime}, {\"game\", Int64.Type}, {\"participantid\", Int64.Type}, {\"side\", type text}, {\"position\", type text}, {\"teamname\", type text}, {\"gamelength\", Int64.Type}, {\"result\", Int64.Type}, {\"kills\", Int64.Type}, {\"deaths\", Int64.Type}, {\"assists\", Int64.Type}, {\"teamkills\", Int64.Type}, {\"teamdeaths\", Int64.Type}, {\"firstblood\", Int64.Type}, {\"team kpm\", Int64.Type}, {\"ckpm\", Int64.Type}, {\"dragons\", Int64.Type}, {\"opp_dragons\", Int64.Type}, {\"barons\", Int64.Type}, {\"opp_barons\", Int64.Type}, {\"towers\", Int64.Type}, {\"opp_towers\", Int64.Type}, {\"inhibitors\", Int64.Type}, {\"opp_inhibitors\", Int64.Type}, {\"damagetochampions\", Int64.Type}, {\"dpm\", Int64.Type}, {\"damagetakenperminute\", Int64.Type}, {\"wardsplaced\", Int64.Type}, {\"wpm\", Int64.Type}, {\"wardskilled\", Int64.Type}, {\"wcpm\", Int64.Type}, {\"controlwardsbought\", Int64.Type}, {\"visionscore\", Int64.Type}, {\"vspm\", Int64.Type}, {\"totalgold\", Int64.Type}, {\"earnedgold\", Int64.Type}, {\"earned gpm\", Int64.Type}, {\"goldspent\", Int64.Type}, {\"gspd\", Int64.Type}, {\"monsterkills\", Int64.Type}})",
+                "    #\"Tipo Alterado\" = Table.TransformColumnTypes(#\"Cabeçalhos Promovidos\",{{\"gameid\", type text}, {\"datacompleteness\", type text}, {\"league\", type text}, {\"year\", Int64.Type}, {\"playoffs\", Int64.Type}, {\"date\", type datetime}, {\"game\", Int64.Type}, {\"participantid\", Int64.Type}, {\"side\", type text}, {\"position\", type text}, {\"teamname\", type text}, {\"gamelength\", Int64.Type}, {\"result\", Int64.Type}, {\"kills\", Int64.Type}, {\"deaths\", Int64.Type}, {\"assists\", Int64.Type}, {\"teamkills\", Int64.Type}, {\"teamdeaths\", Int64.Type}, {\"firstblood\", Int64.Type}, {\"team kpm\", Int64.Type}, {\"ckpm\", Int64.Type}, {\"dragons\", Int64.Type}, {\"opp_dragons\", Int64.Type}, {\"barons\", Int64.Type}, {\"opp_barons\", Int64.Type}, {\"towers\", Int64.Type}, {\"opp_towers\", Int64.Type}, {\"inhibitors\", Int64.Type}, {\"opp_inhibitors\", Int64.Type}, {\"damagetochampions\", Int64.Type}, {\"dpm\", Int64.Type}, {\"damagetakenperminute\", Int64.Type}, {\"wardsplaced\", Int64.Type}, {\"wpm\", Int64.Type}, {\"wardskilled\", Int64.Type}, {\"wcpm\", Int64.Type}, {\"controlwardsbought\", Int64.Type}, {\"visionscore\", Int64.Type}, {\"vspm\", Int64.Type}, {\"totalgold\", Int64.Type}, {\"earnedgold\", Int64.Type}, {\"earned gpm\", Int64.Type}, {\"goldspent\", Int64.Type}, {\"gspd\", Int64.Type}, {\"monsterkills\", Int64.Type}}),",
+                "    #\"Tipo Alterado1\" = Table.TransformColumnTypes(#\"Tipo Alterado\",{{\"date\", type date}})",
                 "in",
-                "    #\"Tipo Alterado\""
+                "    #\"Tipo Alterado1\""
               ],
               "type": "m"
             }
