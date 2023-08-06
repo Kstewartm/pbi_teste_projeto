@@ -5,13 +5,13 @@
       "ordinal": 0,
       "scrollPosition": {
         "x": 0,
-        "y": 0
+        "y": 68.2814843402665
       },
       "nodes": [
         {
           "location": {
-            "x": 0,
-            "y": 0
+            "x": 575.757325,
+            "y": 535.01142200000015
           },
           "nodeIndex": "partidas_jogadores",
           "nodeLineageTag": "68749b4f-5489-42e6-8eef-280b9671622b",
@@ -23,8 +23,8 @@
         },
         {
           "location": {
-            "x": 491.66415193769,
-            "y": 0
+            "x": 553.66878693769013,
+            "y": 201.95795400000003
           },
           "nodeIndex": "partidas_times",
           "nodeLineageTag": "a2fbd812-0232-4fe3-a211-5035582aaae8",
@@ -36,11 +36,37 @@
         },
         {
           "location": {
-            "x": 204,
-            "y": 391
+            "x": 21.529216999999989,
+            "y": 529.181758
           },
-          "nodeIndex": "Tabela",
+          "nodeIndex": "Times",
           "nodeLineageTag": "871cd258-3554-4fb7-9a79-0686475997c5",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 0,
+            "y": 275.220245
+          },
+          "nodeIndex": "Liga",
+          "nodeLineageTag": "94bd7021-6855-41c0-b387-17701ed7a2ff",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 0,
+            "y": 37.831070999999952
+          },
+          "nodeIndex": "lado",
+          "nodeLineageTag": "ec043b00-ca7c-4e7b-876b-5bbcf251df16",
           "size": {
             "height": 200,
             "width": 234
@@ -49,7 +75,7 @@
         }
       ],
       "name": "Todas as tabelas",
-      "zoomValue": 86.67841720414475,
+      "zoomValue": 65.122777764195916,
       "pinKeyFieldsToTop": false,
       "showExtraHeaderInfo": false,
       "hideKeyFieldsWhenCollapsed": false,
