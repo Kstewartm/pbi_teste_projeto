@@ -1,0 +1,9 @@
+{
+  "version": "1.0",
+  "datasetReference": {
+    "byPath": {
+      "path": "../Dash_Competitivo_LOL.Dataset"
+    },
+    "byConnection": null
+  }
+}
